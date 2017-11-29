@@ -28,6 +28,7 @@ setup(
     install_requires=[
         'docker>=2.0.1, <3.0.0',
         'GitPython>=2.0.5, <3.0.0',
+        'python-hglib==2.4'
     ],
     extras_require={
         'registry': ['docker-registry-client>=0.5.1, <0.6.0'],

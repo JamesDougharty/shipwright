@@ -41,9 +41,11 @@ class HgSourceControl(SourceControl):
         repo = self._repo
         dirty = False
         for c, f in repo.status():
-            if c not in ['?']:
+            if c == '?':
+                print('{} {} is not tracked in Mercurial'.format(c, f))
+            else:
                 print('{} {} has been modified'.format(c, f))
-                dirty = True
+            dirty = True
         return dirty
 
     def diff_blobs(self):

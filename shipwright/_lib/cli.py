@@ -253,7 +253,7 @@ def process_arguments(path, arguments, client_cfg, environ):
     if tls_config is not None:
         tls_config.assert_hostname = assert_hostname
 
-    client = docker.APIClient(version='1.18', **client_cfg)
+    client = docker.APIClient(version='1.21', **client_cfg)
     commands = ['build', 'push', 'images']
     command_names = [c for c in commands if arguments.get(c)]
     command_name = command_names[0] if command_names else 'build'
@@ -301,10 +301,9 @@ def run(path, arguments, client_cfg, environ, new_style_args=None):
     name_map = config.get('names', {})
     scm = source_control.source_control(path, namespace, name_map)
     if not dirty and scm.is_dirty():
-        return (
-            'Aborting build, due to uncommitted changes. If you are not ready '
-            'to commit these changes, re-run with the --dirty flag.'
-        )
+        print('Aborting build, due to uncommitted changes. If you are not ready '
+              'to commit these changes, re-run with the --dirty flag.')
+        return
 
     if registry_logins:
         if isinstance(drc, Exception):

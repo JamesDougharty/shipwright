@@ -97,7 +97,11 @@ class NoCache(object):
         )
 
         for evt in build_evts:
-            yield compat.json_loads(evt)
+            for i_evt in evt.splitlines():
+                try:
+                    yield compat.json_loads(i_evt)
+                except ValueError as e:
+                    print(e)
 
         self._pulled_images[(repo, tag)] = True
 

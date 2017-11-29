@@ -228,23 +228,24 @@ def main():
 
 def process_arguments(path, arguments, client_cfg, environ):
     try:
-        config = json.load(open(
-            os.path.join(path, '.shipwright.json'),
-        ))
+        config = json.load(open(os.path.join(path, 'shipwright.json'),))
     except IOError:
-        config = {
-            'namespace': (
-                arguments['--account'] or
-                environ.get('SW_NAMESPACE')
-            ),
-        }
-    if config['namespace'] is None:
-        exit(
-            'Please specify your docker hub account in\n'
-            'the .shipwright.json config file,\n '
-            'the command line or set SW_NAMESPACE.\n'
-            'Run shipwright --help for more information.',
-        )
+        try:
+            config = json.load(open(os.path.join(path, '.shipwright.json'),))
+        except IOError:
+            config = {
+                'namespace': (
+                    arguments['--account'] or
+                    environ.get('SW_NAMESPACE')
+                ),
+            }
+        if config['namespace'] is None:
+            exit(
+                'Please specify your docker hub account in\n'
+                'the .shipwright.json config file,\n '
+                'the command line or set SW_NAMESPACE.\n'
+                'Run shipwright --help for more information.',
+            )
     assert_hostname = config.get('assert_hostname')
     if arguments['--x-assert-hostname']:
         assert_hostname = not arguments['--x-assert-hostname']

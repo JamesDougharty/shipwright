@@ -35,6 +35,7 @@ def push(client, image_tag):
         return client.push(image, tag, stream=True)
 
     for evt in retry_gen(_push):
-        d = compat.json_loads(evt)
-        d.update(extra)
-        yield d
+        for p in evt.splitlines():
+            d = compat.json_loads(p)
+            d.update(extra)
+            yield d
